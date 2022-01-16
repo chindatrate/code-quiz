@@ -12,6 +12,55 @@
 
 <body>
 
+    <header>
+        <h3 id="view-high-scores">View Highscores</h3>
+        <h3 class="timer">Time: <span id="timer"></span></h3>
+    </header>
+
+    <!--Start Screen-->
+    <div id="start-container">
+        <div class="container start">
+            <h1>Coding Quiz Challenge</h1>
+            <p> Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat cum ea dicta animi aliquam ad
+                nesciunt,
+                est pariatur alias vitae eius minima adipisci quaerat incidunt a iusto magni commodi harum?
+            </p>
+            <button class="btn start" id="start-game">Start Quiz</button>
+        </div>
+    </div>
+
+    <!--Quiz-->
+    <div id="question-container">
+        <div class="container question">
+            <div id="question"></div>
+            <div id="answer-buttons" class="btn-answer"></div>
+        </div>
+    </div>
+
+    <!--Score-->
+    <div id="end-container">
+        <div class="container end"></div>
+        <div id="score">
+            <h1>All done!</h1>
+        </div>
+        <form id="initials-form" class="initials">
+            <p> Enter Initials:
+                <input type="text" name="initials" class="text-input" />
+                <button class="btn start" id="submit-score" type="submit">Submit</button>
+            </p>
+        </form>
+    </div>
+
+    <div id="high-score-container">
+        <div class="container high-score">
+            <h1>High Scores</h1>
+            <ol>Score List</ol>
+            <div>
+                <button class="btn" id="go back">Go Back</button>
+                <button class="btn" id="clear-high-scores">Clear High Scores</button>
+            </div>
+        </div>
+    </div>
 
     <!--Linking JS-->
     <script src="./assets/script.js"></script>
