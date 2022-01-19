@@ -58,7 +58,7 @@ var questions = [
     {
         q: 'Arrays in Javascript can be used to store ___.',
         a: '4. all of the above',
-        choces: [{ choice: '1. booleans' }, { choice: '2. numbers' }, { choice: '3. strings' }, { choice: '4. all of the above' }]
+        choices: [{ choice: '1. booleans' }, { choice: '2. numbers' }, { choice: '3. strings' }, { choice: '4. all of the above' }]
     },
 ];
 
@@ -260,7 +260,7 @@ var loadHighScore = function () {
     for (var i = 0; i < LoadedHighScores.length; i++) {
         var highscoreEl = document.createElement("li");
         highscoreEl.className = "high-score";
-        highscoreEl.innerText = LoadedHighScores[i].initials + " - " + LoadedHighScores[i].score;
+        highscoreEl.HTML = LoadedHighScores[i].initials + " - " + LoadedHighScores[i].score;
         listHighScoreEl.appendChild(highscoreEl);
 
         HighScores.push(LoadedHighScores[i]);

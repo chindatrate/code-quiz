@@ -94,6 +94,14 @@ p {
     border: 2px solid var(--secondary);
 }
 
+#end-container {
+    padding: 20px;
+    flex-direction: column;
+    width: 50%;
+    margin: auto;
+}
+
+
 .show {
     display: flex;
 }
