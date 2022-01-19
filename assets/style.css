@@ -27,9 +27,9 @@ header {
     width: 85%;
 }
 
-#view.high.scores:hover {
+#view-high-scores:hover {
     cursor: pointer;
-    color: var(--primary);
+    color: var(--white);
 }
 
 header h3 {
@@ -44,7 +44,7 @@ header h3 {
     padding-right: 20px;
 }
 
-
+/* Main Content */
 
 .container {
     padding: 20px;
@@ -145,6 +145,8 @@ p {
     grid-template-rows: repeat(4, auto);
     grid-gap: 5px;
     margin: 20px 0;
+    width: 50%;
+    text-align: left;
 }
 
 .startend {
@@ -152,24 +154,18 @@ p {
     margin-top: 10px;
 }
 
-.btn-answer {
-    width: 50%;
-    text-align: left;
+.banner {
+    text-align: center;
+    color:var(--white);
 }
 
 ol {
     list-style-type: number;
 }
 
-.banner {
-    text-align: center;
-    font-style: italic;
-    margin: 0 100px;
-}
 
-.banner h1 {
-    border-top: 2px solid;
-    margin: 0 auto;
-    text-align: center;
-    padding-top: 5px;
+@media screen and (max-width: 1024px) {
+    .btn {
+        width:100%;
+    }
 }

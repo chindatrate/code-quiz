@@ -2,10 +2,10 @@ var containerQuestionEl = document.getElementById("question-container");
 var containerStartEl = document.getElementById("start-container");
 var containerEndEl = document.getElementById("end-container");
 var containerScoreEl = document.getElementById("score-banner");
-var initialsForm = document.getElementById("initials-form");
+var formInitials = document.getElementById("initials-form");
 var containerHighScoresEl = document.getElementById("high-score-container");
 var viewHighScoreEl = document.getElementById("view-high-scores");
-var listHighScoresEl = document.getElementById("high-score-list");
+var listHighScoreEl = document.getElementById("high-score-list");
 var correctEl = document.getElementById("correct");
 var wrongEl = document.getElementById("wrong");
 // Buttons
@@ -16,7 +16,6 @@ var btnAnswersEl = document.getElementById("answer-buttons");
 // Q&A Element
 var questionEl = document.getElementById("question");
 var timerEl = document.getElementById("timer");
-var answerbuttonsEl = document.getElementById("answer-buttons");
 var arrayShuffledQuestions;
 var timeleft;
 var score = 0;
@@ -46,8 +45,69 @@ var questions = [
         a: '3. =',
         choices: [{ choice: '1. *' }, { choice: '2. -' }, { choice: '3. =' }, { choice: '4. x' }]
     },
+    {
+        q: 'What does DOM stand for?',
+        a: '2. Document Object Model',
+        choices: [{ choice: '1. Data Oriented Model' }, { choice: '2. Document Object Model' }, { choice: '3. Data Object Model' }, { choice: '4. Document Oriented Model' }]
+    },
+    {
+        q: 'What syntax would call a function?',
+        a: '1. function()',
+        choices: [{ choice: '1. function()' }, { choice: '2. function' }, { choice: '3. var function' }, { choice: '4. call function' }]
+    },
+    {
+        q: 'Arrays in Javascript can be used to store ___.',
+        a: '4. all of the above',
+        choces: [{ choice: '1. booleans' }, { choice: '2. numbers' }, { choice: '3. strings' }, { choice: '4. all of the above' }]
+    },
 ];
 
+
+// Back Button Function
+var renderStartPage = function () {
+    containerHighScoresEl.classList.add("hide")
+    containerHighScoresEl.classList.remove("show")
+    containerStartEl.classList.remove("hide")
+    containerStartEl.classList.add("show")
+    containerScoreEl.removeChild(containerScoreEl.lastChild)
+    QuestionIndex = 0
+    gameover = ""
+    timerEl.textContent = 0
+    score = 0
+
+    if (correctEl.className = "show") {
+        correctEl.classList.remove("show");
+        correctEl.classList.add("hide");
+    }
+
+    if (wrongEl.className = "show") {
+        wrongEl.classList.remove("show");
+        wrongEl.classList.add("hide");
+    }
+}
+
+// Timer
+var setTime = function () {
+    timeleft = 30;
+
+    var timercheck = setInterval(function () {
+        timerEl.innerText = timeleft;
+        timeleft--
+
+        if (gameover) {
+            clearInterval(timercheck)
+        }
+
+        if (timeleft < 0) {
+            showScore()
+            timerEl.innerText = 0
+            clearInterval(timercheck)
+        }
+    }, 1000);
+}
+
+
+// Start Game
 var startGame = function () {
     containerStartEl.classList.add('hide');
     containerStartEl.classList.remove('show');
@@ -80,7 +140,7 @@ var displayQuestion = function (index) {
         answerbutton.classList.add('btn')
         answerbutton.classList.add('answerbtn')
         answerbutton.addEventListener("click", answerCheck)
-        answerbuttonsEl.appendChild(answerbutton)
+        btnAnswersEl.appendChild(answerbutton)
     }
 };
 
@@ -143,27 +203,128 @@ var showScore = function () {
     containerScoreEl.appendChild(scoreDisplay);
 }
 
+//Create HighScore Value
+var createHighScore = function (event) {
+    event.preventDefault()
+    var initials = document.querySelector("#initials").value;
+    if (!initials) {
+        alert("Enter your initials!");
+        return;
+    }
+
+    formInitials.reset();
+
+    var HighScore = {
+        initials: initials,
+        score: score
+    }
 
 
-// Timer
-var setTime = function () {
-    timeleft = 30;
+    // Push & Sort Score
+    HighScores.push(HighScore);
+    HighScores.sort((a, b) => { return b.score - a.score });
 
-    var timercheck = setInterval(function () {
-        timerEl.innerText = timeleft
-        timeleft--;
+    //Clear Visible List
+    while (listHighScoreEl.firstChild) {
+        listHighScoreEl.removeChild(listHighScoreEl.firstChild)
+    }
 
-        if (gameover) {
-            clearInterval(timercheck)
-        }
+    //Create Elements in order of HighScores
+    for (var i = 0; i < HighScores.length; i++) {
+        var highscoreEl = document.createElement("li");
+        highscoreEl.className = "high-score";
+        highscoreEl.innerHTML = HighScores[i].initials + " - " + HighScores[i].score;
+        listHighScoreEl.appendChild(highscoreEl);
+    }
 
-        if (timeleft < 0) {
-            showScore()
-            timerEl.innerText = 0
-            clearInterval(timercheck)
-        }
-    }, 1000);
+    saveHighScore();
+    displayHighScores();
+
 }
 
+//Save High Score
+var saveHighScore = function () {
+    localStorage.setItem("HighScores", JSON.stringify(HighScores))
+}
+
+//Load Values
+var loadHighScore = function () {
+    var LoadedHighScores = localStorage.getItem("HighScores")
+    if (!LoadedHighScores) {
+        return false;
+    }
+
+    LoadedHighScores = JSON.parse(LoadedHighScores);
+    LoadedHighScores.sort((a, b) => { return b.score - a.score })
+
+    for (var i = 0; i < LoadedHighScores.length; i++) {
+        var highscoreEl = document.createElement("li");
+        highscoreEl.className = "high-score";
+        highscoreEl.innerText = LoadedHighScores[i].initials + " - " + LoadedHighScores[i].score;
+        listHighScoreEl.appendChild(highscoreEl);
+
+        HighScores.push(LoadedHighScores[i]);
+    }
+}
+
+//Display HighScore Screen from Link
+var displayHighScores = function () {
+    containerHighScoresEl.classList.remove("hide");
+    containerHighScoresEl.classList.add("show");
+    gameover = "true"
+
+    if (containerEndEl.className = "show") {
+        containerEndEl.classList.remove("show");
+        containerEndEl.classList.add("hide");
+    }
+
+    if (containerStartEl.className = "show") {
+        containerStartEl.classList.remove("show");
+        containerStartEl.classList.add("hide");
+    }
+
+    if (containerQuestionEl.className = "show") {
+        containerQuestionEl.classList.remove("show");
+        containerQuestionEl.classList.add("hide");
+    }
+
+    if (correctEl.className = "show") {
+        correctEl.classList.remove("show");
+        correctEl.classList.add("hide");
+    }
+
+    if (wrongEl.className = "show") {
+        wrongEl.classList.remove("show");
+        wrongEl.classList.add("hide");
+    }
+}
+
+//Clear HighScores
+var clearScores = function () {
+    HighScores = [];
+
+    while (listHighScoreEl.firstChild) {
+        listHighScoreEl.removeChild(listHighScoreEl.firstChild);
+    }
+
+    localStorage.clear(HighScores);
+}
+
+loadHighScore()
+
+
+
+
+
+
+// Add Event Listeners
+
 btnStartEl.addEventListener("click", startGame)
+
 viewHighScoreEl.addEventListener("click", displayHighScores)
+
+btnGoBackEl.addEventListener("click", renderStartPage)
+
+btnClearScoresEl.addEventListener("click", clearScores)
+
+formInitials.addEventListener("submit", createHighScore)
